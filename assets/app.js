@@ -1,30 +1,32 @@
 $(document).ready(function(){
 
-    const displayedBtns = [];
+    const animals = ["Pandas", "Giraffes", "Dolphins"];
 
     function displayImage(){
         $("#imageContain").empty();
-        const input = $(this).attr("data");
-        const queryURL = "https://api.giphy.com/v1/gifs/search?q=" + input + "&api_key=fzRpP1tlDGeKQ5Lt6loKLb7r5PHEtaCXlimit=10";
+        var input = $(this).attr("data");
+        var limit = 10;
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + input + "&limit=" + limit + "&api_key=fzRpP1tlDGeKQ5Lt6loKLb7r5PHEtaCX";
 
         $.ajax({            
             url: queryURL,
             method: "GET",
         }).done(function(response){
-            for (const i = 0; i < limit;i++) {
-                const display = $("<div>")
+            for (var j = 0; j < limit;j++) {
+                var display = $("<div>")
                 display.addClass("holder")
 
-                const image = $("<img>")
-                image.attr("src", response.data[i].images.original_still.url);
-                image.attr("data-still", response.data[i]).images.original_still.url);
-                image.attr("data-animate", response.data[i].images.original_still.url);
+                var image = $("<img>")
+                image.attr("src", response.data[j].images.original_still.url);
+                image.attr("data-still", response.data[j]).images.original_still.url);
+                image.attr("data-animate", response.data[j].images.original_still.url);
+                image.attr("data-state", "still");
                 image.attr("class","gif");
                 display.append(image);
 
-                const rating = response.data[i].rating;
+                var rating = response.data[j].rating;
                 console.log(response);
-                const pRating = $("<p>").text("Rating: " + rating);
+                var pRating = $("<p>").text("Rating: " + rating);
                 display.append(pRating)
 
                 $("#imageContain").append(display);
@@ -35,25 +37,25 @@ $(document).ready(function(){
     function makeBtn() {
         $("#buttonDiv").empty();
 
-        for (const i = 0; i < displayedBtns.length; i++) {
+        for (var i = 0; i < displayedBtns.length; i++) {
 
-            const newBtn = $("<button>")
+            var newBtn = $("<button>")
             newBtn.attr("class", "btn btn-primary");
             newBtn.attr("id", "input");
-            newBtn.attr("data-name", displayedBtns[i]);
-            newBtn.text(displayedBtns[i]);
+            newBtn.attr("data-name", animals[i]);
+            newBtn.text(animals[i]);
             $("#buttonDiv").append(newBtn);
         }
     }
 
     function imageStateChange() {
-        const state = $(this).attr("data-state");
-        const animImg = $(this).attr("data-animate");
-        const stillImg = $(this).attr("data-still");
+        var state = $(this).attr("data-state");
+        var animImg = $(this).attr("data-animate");
+        var stillImg = $(this).attr("data-still");
 
         if(state === "still") {
             $(this).attr("src", animImg);
-            $(this).attr("data-state", "still");
+            $(this).attr("data-state", "animate");
         } 
 
         else if(state === "animate") {
@@ -65,9 +67,9 @@ $(document).ready(function(){
 
     $("#add").on("click", function(){
 
-        const input = $("#search".val().trim();
+        const inputX = $("#search".val().trim();
         form.reset();
-        displayedBtns.push(input);
+        displayedBtns.push(inputX);
 
         makeBtn();
 
